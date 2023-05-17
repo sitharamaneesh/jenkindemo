@@ -17,10 +17,11 @@ pipeline {
         }
 
         stage('Docker Run') {
-            steps {}
+            steps {
 
                 echo "Starting Docker run.."
-                sh "docker run -d 721983679407.dkr.ecr.us-east-1.amazonaws.com/jenkins_docker_ec2:latest "
+                sh "docker run -d 721983679407.dkr.ecr.us-east-1.amazonaws.com/jenkins_docker_ec2:latest"
+            }
             }
         }
     }
