@@ -26,10 +26,14 @@ pipeline {
                 }
             }
         }
-       stage('Run Docker container') {
+    
+  stage('Run Docker container') {
             steps {
                 script {
-                    sh "docker run -d --net=host ${DOCKER_IMAGE}:${tag}"
+                    def containerName = "apachesite"
+                    sh "docker stop ${containerName} || true"
+                    sh "docker rm ${containerName} || true"
+                    sh "docker run -d --name ${containerName} --net=host ${DOCKER_IMAGE}:${tag}"
                 }
             }
         }
@@ -37,4 +41,5 @@ pipeline {
 
         }
     }
+
 
