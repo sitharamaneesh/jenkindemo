@@ -34,7 +34,7 @@ pipeline {
 		    def containerName = "apachesite" 
 		    sh "docker stop ${containerName} || true"
 		    sh "docker rm ${containerName} || true"
-                    sh "docker run -d --net=host ${DOCKER_IMAGE}:${tag}"
+                    sh "docker run -d --name ${containerName} --net=host ${DOCKER_IMAGE}:${tag}"
                 }
             }
         }
