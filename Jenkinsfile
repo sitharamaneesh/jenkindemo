@@ -2,7 +2,7 @@ pipeline {
     agent { label 'development' }
     environment {
         DOCKER_IMAGE = 'sitharamaneesh/firstrepo'
-	tag = sh(returnStdout: true, script: "git rev-parse --short=10 HEAD").trim()`
+	tag = sh(returnStdout: true, script: "git rev-parse --short=10 HEAD").trim()
     }
     stages {
         stage('Checkout') {
