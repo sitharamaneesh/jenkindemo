@@ -30,7 +30,7 @@ pipeline {
        stage('Run Docker container') {
             steps {
                 script {
-                    sh "docker run -d  ${DOCKER_IMAGE}:latest"
+                    sh "docker run -d --net=host ${DOCKER_IMAGE}:latest"
                 }
             }
         }
