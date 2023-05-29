@@ -2,6 +2,7 @@ pipeline {
     agent { label 'development' }
     environment {
         DOCKER_IMAGE = 'sitharamaneesh/firstrepo'
+	tag = sh(returnStdout: true, script: "git rev-parse --short=10 HEAD").trim()
     }
     stages {
         stage('Checkout') {
@@ -12,7 +13,7 @@ pipeline {
       stage('Build Docker image') {
             steps {
                 script {
-                    docker.build("${DOCKER_IMAGE}:latest")
+                    docker.build("${DOCKER_IMAGE}:${tag}")
                 }
             }
         }
@@ -21,7 +22,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
-                        docker.image("${DOCKER_IMAGE}:latest").push()
+                        docker.image("${DOCKER_IMAGE}:${tag}").push()
                     }
                 }
             }
@@ -30,7 +31,10 @@ pipeline {
        stage('Run Docker container') {
             steps {
                 script {
-                    sh "docker run -d --net=host ${DOCKER_IMAGE}:latest"
+		    def containerName = "apachesite" 
+		    sh "docker stop ${containerName} || true"
+		    sh "docker rm ${containerName} || true"
+                    sh "docker run -d --name ${containerName} --net=host ${DOCKER_IMAGE}:${tag}"
                 }
             }
         }
