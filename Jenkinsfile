@@ -31,6 +31,9 @@ pipeline {
        stage('Run Docker container') {
             steps {
                 script {
+		    def containerName = "apachesite" 
+		    sh "docker stop ${containerName} || true"
+		    sh "docker rm ${containerName} || true"
                     sh "docker run -d --net=host ${DOCKER_IMAGE}:${tag}"
                 }
             }
